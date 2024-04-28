@@ -21,6 +21,9 @@ pipeline {
                 withSonarQubeEnv(installationName: 'sonarqube1'){
                     sh 'mvn sonar:sonar'
                 }
+                timeout(time: 1, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
             }
         }
         stage('upload to artifactory with plugin') {
