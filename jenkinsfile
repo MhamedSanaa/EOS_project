@@ -18,12 +18,7 @@ pipeline {
         }
         stage('Sonar analysis') {
             steps {
-                sh '''mvn sonar:sonar -Dsonar.url=http://192.168.1.12:9000/ \
-                -Dsonar.login=squ_beb7ab7089f05a8f257b2277957244d712a9550d \
-                -Dsonar.projectName=Product \
-                -Dsonar.java.binairies=. \
-                -Dsonar.projectKey=test
-                '''
+                sh ''' mvn sonar:sonar '''
                 /*sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Petclinic \
                 -Dsonar.java.binaries=. '''*/
             }
