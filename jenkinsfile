@@ -18,15 +18,13 @@ pipeline {
         }
         stage('Sonar analysis') {
             steps {
-                withSonarQubeEnv('sonar-server') {
-                    sh '''mvn sonar:sonar -Dsonar.url=http://192.168.1.12:9000/ \
-                    -Dsonar.login=squ_5da476024451efdac0f18481c22162bb83b204ea \
-                    -Dsonar.projectName=Product \
-                    -Dsonar.java.binairies=. \
-                    '''
-                    /*sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Petclinic \
-                    -Dsonar.java.binaries=. '''*/
-                }
+                sh '''mvn sonar:sonar -Dsonar.url=http://192.168.1.12:9000/ \
+                -Dsonar.login=squ_5da476024451efdac0f18481c22162bb83b204ea \
+                -Dsonar.projectName=Product \
+                -Dsonar.java.binairies=. \
+                '''
+                /*sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Petclinic \
+                -Dsonar.java.binaries=. '''*/
             }
         }
         stage('upload to artifactory with plugin') {
