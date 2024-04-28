@@ -16,7 +16,7 @@ pipeline {
                 sh "mvn clean install"
             }
         }
-        stage('Sonar analysis') {
+        stage('Sonar analysis and dependency check') {
             steps {
                 withSonarQubeEnv(installationName: 'sonarqube1'){
                     sh 'mvn sonar:sonar'
@@ -24,6 +24,7 @@ pipeline {
                 timeout(time: 1, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
+                dependencyCheck additionalArguments: '--format HTML', odcInstallation: 'dependency-check'
             }
         }
         stage('upload to artifactory with plugin') {
