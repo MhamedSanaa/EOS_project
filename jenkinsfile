@@ -22,7 +22,7 @@ pipeline {
                 -Dsonar.login=squ_beb7ab7089f05a8f257b2277957244d712a9550d \
                 -Dsonar.projectName=Product \
                 -Dsonar.java.binairies=. \
-                -Dsonar.projectKey=Product
+                -Dsonar.projectKey=test
                 '''
                 /*sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Petclinic \
                 -Dsonar.java.binaries=. '''*/
