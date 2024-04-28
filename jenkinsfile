@@ -18,9 +18,9 @@ pipeline {
         }
         stage('Sonar analysis') {
             steps {
-                sh ''' mvn sonar:sonar '''
-                /*sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Petclinic \
-                -Dsonar.java.binaries=. '''*/
+                withSonarQubeEnv(installationName: 'sonarqube1'){
+                    sh 'mvn sonar:sonar'
+                }
             }
         }
         stage('upload to artifactory with plugin') {
