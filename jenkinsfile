@@ -15,6 +15,12 @@ pipeline {
                 sh "mvn clean install"
             }
         }
+        stage('Sonar analysis') {
+            steps {
+                sh "mvn sonar:sonar"
+                sh "mvn clean install"
+            }
+        }
         stage('upload to artifactory with plugin') {
             steps {
                 jf "-v"
@@ -31,7 +37,7 @@ pipeline {
                 }
             }
         }
-        stage('Push docker image to registry') {
+        /*stage('Push docker image to registry') {
             steps {
                 script{
                     withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
@@ -40,6 +46,6 @@ pipeline {
                     }
                 }
             }
-        }
+        }*/
     }
 }
