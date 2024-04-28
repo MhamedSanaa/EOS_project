@@ -1,0 +1,45 @@
+pipeline {
+    agent any
+    tools{
+        maven 'maven'
+        jfrog 'jfrog-cli-latest'
+    }
+    environment {
+        CI = true
+        ARTIFACTORY_ACCESS_TOKEN = credentials('artifactory-access-token')
+    }
+    stages {
+        stage('Build product microservice') {
+            steps {
+                sh "mvn -v"
+                sh "mvn clean install"
+            }
+        }
+        stage('upload to artifactory with plugin') {
+            steps {
+                jf "-v"
+                jf "c show"
+                jf "rt u ./target/ecomm-product-1.0.jar ecomm-product/"
+            }
+        }
+        stage('Build product docker image') {
+            steps {
+                script{
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
+                        sh "docker build -t ${user}/ecomm-product ."
+                    }
+                }
+            }
+        }
+        stage('Push docker image to registry') {
+            steps {
+                script{
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
+                        sh "docker login -u ${user} -p ${pwd}"
+                        sh "docker push ${user}/ecomm-product"
+                    }
+                }
+            }
+        }
+    }
+}
