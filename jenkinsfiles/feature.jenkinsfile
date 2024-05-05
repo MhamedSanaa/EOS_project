@@ -1,0 +1,42 @@
+pipeline {
+    agent any
+    tools{
+        maven 'maven'
+        jfrog 'jfrog-cli-latest'
+    }
+    environment {
+        CI = true
+        ARTIFACTORY_ACCESS_TOKEN = credentials('artifactory-access-token')
+        SCANNER_HOME=tool 'sonarqube-scanner'
+    }
+    stages {
+        stage('Build product microservice') {
+            steps {
+                sh "mvn -v"
+                sh "mvn clean install"
+            }
+        }
+        stage('Sonar analysis and dependency check') {
+            steps {
+                withSonarQubeEnv(installationName: 'sonarqube1'){
+                    sh 'mvn sonar:sonar'
+                }
+                timeout(time: 1, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+                dependencyCheck additionalArguments: '--format HTML', odcInstallation: 'dependency-check'
+            }
+        }
+        stage('upload to artifactory with plugin') {
+            steps {
+                script {
+                    def prBaseBranch = env.BRANCH_NAME
+                    echo "Base branch name: ${prBaseBranch}"
+                    jf "-v"
+                    jf "c show"
+                    jf "rt u --flat ./target/ecomm-order-1.0.jar microservice-order/"
+                }
+            }
+        }
+    }
+}
