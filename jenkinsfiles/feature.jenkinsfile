@@ -34,7 +34,7 @@ pipeline {
                     echo "Base branch name: ${prBaseBranch}"
                     jf "-v"
                     jf "c show"
-                    jf "rt rcr --repo=ecomm-order maven"
+                    jf "rt rc --repo=ecomm-order maven"
                     jf "rt u -p ./target/ecomm-order-1.0.jar ecomm-order/"
                 }
             }
