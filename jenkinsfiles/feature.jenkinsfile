@@ -29,9 +29,11 @@ pipeline {
         }
         stage('upload to artifactory with plugin') {
             steps {
+                sh "echo ${env.CHANGE_TARGET}"
                 jf "-v"
                 jf "c show"
-                jf "rt u ./target/ecomm-order-1.0.jar ecomm-order/"
+                jf "rt rcr --repo=ecomm-order maven"
+                jf "rt u -p ./target/ecomm-order-1.0.jar ecomm-order/"
             }
         }
     }
