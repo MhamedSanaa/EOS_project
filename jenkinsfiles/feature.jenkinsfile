@@ -30,12 +30,11 @@ pipeline {
         stage('upload to artifactory with plugin') {
             steps {
                 script {
-                    def prBaseBranch = env.CHANGE_TARGET
+                    def prBaseBranch = env.BRANCH_NAME
                     echo "Base branch name: ${prBaseBranch}"
                     jf "-v"
                     jf "c show"
-                    jf "rt rc repo-key=test repo-type=LOCAL package-type=maven"
-                    jf "rt u -p ./target/ecomm-order-1.0.jar ecomm-order/"
+                    jf "rt u -p ./target/ecomm-order-1.0.jar microservice-order/"
                 }
             }
         }
