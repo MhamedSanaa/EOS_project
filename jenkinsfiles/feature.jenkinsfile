@@ -34,7 +34,7 @@ pipeline {
                     echo "Base branch name: ${prBaseBranch}"
                     jf "-v"
                     jf "c show"
-                    jf "rt u -p ./target/ecomm-order-1.0.jar microservice-order/"
+                    jf "rt u --flat ./target/ecomm-order-1.0.jar microservice-order/"
                 }
             }
         }
