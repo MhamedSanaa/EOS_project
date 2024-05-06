@@ -43,7 +43,7 @@ pipeline {
                 }
             }
         }
-        /*stage('Push docker image to registry') {
+        stage('Push docker image to registry') {
             steps {
                 script{
                     withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
@@ -52,6 +52,6 @@ pipeline {
                     }
                 }
             }
-        }*/
+        }
     }
 }
