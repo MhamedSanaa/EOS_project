@@ -51,9 +51,18 @@ pipeline {
                     args '--entrypoint=""'
                 }
             }
-            steps {
-                sh "trivy version"
-                sh "trivy image ${user}/ecomm-order"
+           steps {
+                // Check for vulnerabilities and potentially fail the pipeline
+                script {
+                    def scanOutput = sh(returnStdout: true, script: "trivy image ${user}/ecomm-product")
+                    if (scanOutput.contains('CRITICAL')) {
+                    error "Critical vulnerabilities found in the image. Fix them before pushing."
+                    } else {
+                    echo "Scan completed. No critical vulnerabilities found."
+                    }
+                    // Save the report for further analysis (optional)
+                    sh "trivy image ${user}/ecomm-product | tee trivy-report.txt"
+                }
             }
         }
         stage('Push docker image to registry') {
