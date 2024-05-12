@@ -43,6 +43,19 @@ pipeline {
                 }
             }
         }
+        stage('scanning docker image with trivy') {
+            agent {
+                docker {
+                    image 'aquasec/trivy'
+                    reuseNode true
+                    args '--entrypoint=""'
+                }
+            }
+            steps {
+                sh "trivy version"
+                sh "trivy image ${user}/ecomm-order"
+            }
+        }
         stage('Push docker image to registry') {
             steps {
                 script{
