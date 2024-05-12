@@ -47,16 +47,7 @@ pipeline {
                 }
             }
         }
-        stage('Build product docker image') {
-            steps {
-                script{
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
-                        sh "docker build -t ${user}/ecomm-product ."
-                    }
-                }
-            }
-        }
-        stage('tryto work out jfrog cli') {
+        stage('scanning docker image with trivy') {
             agent {
                 docker {
                     image 'aquasec/trivy'
