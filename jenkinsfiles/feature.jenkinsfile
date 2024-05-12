@@ -10,7 +10,7 @@ pipeline {
         SCANNER_HOME=tool 'sonarqube-scanner'
     }
     stages {
-        stage('Build product microservice') {
+        stage('Build order microservice') {
             steps {
                 sh "mvn -v"
                 sh "mvn clean install"
@@ -38,11 +38,11 @@ pipeline {
                 }
             }
         }
-        stage('Build product docker image') {
+        stage('Build order docker image') {
             steps {
                 script{
                     withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
-                        sh "docker build -t ${user}/ecomm-product ."
+                        sh "docker build -t ${user}/ecomm-order ."
                     }
                 }
             }
