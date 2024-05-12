@@ -57,6 +57,7 @@ pipeline {
             }
             steps {
                 sh "trivy version"
+                sh "trivy image ${user}/ecomm-order"
             }
         }
 
