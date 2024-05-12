@@ -52,6 +52,7 @@ pipeline {
                 docker {
                     image 'aquasec/trivy'
                     reuseNode true
+                    args '--entrypoint=""'
                 }
             }
             steps {
