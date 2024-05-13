@@ -63,7 +63,7 @@ pipeline {
                         }
                         // Save the report for further analysis (optional)
                         sh "trivy version"
-                        sh "trivy image ${user}/ecomm-product | tee trivy-report.txt"
+                        sh "trivy image ninjaops/ecomm-product | tee trivy-report.txt"
                     }
                 }
             }
