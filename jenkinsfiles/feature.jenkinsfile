@@ -16,7 +16,7 @@ pipeline {
                 sh "mvn clean install"
             }
         }
-        stage('Sonar analysis and dependency check') {
+        /*stage('Sonar analysis and dependency check') {
             steps {
                 withSonarQubeEnv(installationName: 'sonarqube1'){
                     sh 'mvn sonar:sonar'
@@ -26,14 +26,14 @@ pipeline {
                 }
                 dependencyCheck additionalArguments: '--format HTML', odcInstallation: 'dependency-check'
             }
-        }
-        stage('upload to artifactory with plugin') {
+        }*/
+        /*stage('upload to artifactory with plugin') {
             steps {
                 jf "-v"
                 jf "c show"
                 jf "rt u ./target/ecomm-product-1.0.jar ecomm-product/"
             }
-        }
+        }*/
         stage('Build product docker image') {
             steps {
                 script{
@@ -46,12 +46,12 @@ pipeline {
         stage('scanning docker image with trivy') {
             agent {
                 docker {
+                    args '-v trivy-cache:/root/.cache/'
                     image 'aquasec/trivy'
                     reuseNode true
-                    args '--entrypoint="" --privileged'
                 }
             }
-           steps {
+            steps {
                 // Check for vulnerabilities and potentially fail the pipeline
                 script {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
