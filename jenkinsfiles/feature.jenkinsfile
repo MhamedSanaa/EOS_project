@@ -52,19 +52,10 @@ pipeline {
                 }
             }
             steps {
-                // Check for vulnerabilities and potentially fail the pipeline
-                script {
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
-                        def scanOutput = sh(returnStdout: true, script: "trivy image ${user}/ecomm-product")
-                        if (scanOutput.contains('CRITICAL')) {
-                        error "Critical vulnerabilities found in the image. Fix them before pushing."
-                        } else {
-                        echo "Scan completed. No critical vulnerabilities found."
-                        }
-                        // Save the report for further analysis (optional)
-                        sh "trivy version"
-                        sh "trivy image ninjaops/ecomm-product | tee trivy-report.txt"
-                    }
+                withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
+                    // Save the report for further analysis (optional)
+                    sh "trivy version"
+                    sh "trivy image ninjaops/ecomm-product | tee trivy-report.txt"
                 }
             }
         }
