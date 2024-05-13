@@ -46,14 +46,14 @@ pipeline {
         stage('scanning docker image with trivy') {
             agent {
                 docker {
-                    args '--entrypoint=\'\' -v trivy-cache:/root/.cache/'
+                    args '--entrypoint=\'\' -v trivy-cache:/root/.cache/ --privileged'
                     image 'aquasec/trivy'
                     reuseNode true
                 }
             }
             steps {
                 sh "trivy version"
-                sh "trivy image ninjaops/ecomm-product | tee trivy-report.txt"
+                sh "trivy image ninjaops/ecomm-product"
             }
         }
         stage('Push docker image to registry') {
