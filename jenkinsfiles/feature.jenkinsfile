@@ -46,7 +46,7 @@ pipeline {
         stage('scanning docker image with trivy') {
             agent {
                 docker {
-                    args '--entrypoint=\'\' -v trivy-cache:/root/.cache/ --privileged'
+                    args "--entrypoint=\'\' -v ${WORKSPACE}:/root/.cache/ --privileged"
                     image 'aquasec/trivy'
                     reuseNode true
                 }
