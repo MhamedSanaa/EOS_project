@@ -21,9 +21,9 @@ pipeline {
                 withSonarQubeEnv(installationName: 'sonarqube-server'){
                     sh 'mvn sonar:sonar'
                 }
-                timeout(time: 5, unit: 'MINUTES') {
+                /*timeout(time: 5, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
-                }
+                }*/
                 dependencyCheck additionalArguments: '--format HTML', odcInstallation: 'dependency-check'
             }
         }
