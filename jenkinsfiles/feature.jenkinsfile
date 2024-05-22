@@ -25,7 +25,7 @@ pipeline {
                 //waitForQualityGate abortPipeline: true
                 //}
                 dependencyCheck additionalArguments: '--format HTML', odcInstallation: 'dependency-check-main'
-            }
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'            }
         }
         /*stage('upload to artifactory with plugin') {
             steps {
