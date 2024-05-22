@@ -18,7 +18,7 @@ pipeline {
         }
         stage('Sonar analysis and dependency check') {
             steps {
-                withSonarQubeEnv(installationName: 'sonarqube1'){
+                withSonarQubeEnv(installationName: 'sonarqube-server'){
                     sh 'mvn sonar:sonar'
                 }
                 timeout(time: 1, unit: 'MINUTES') {
