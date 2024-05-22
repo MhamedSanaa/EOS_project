@@ -18,14 +18,15 @@ pipeline {
         }
         stage('Sonar analysis and dependency check') {
             steps {
-                withSonarQubeEnv(installationName: 'sonarqube-server'){
+                /*withSonarQubeEnv(installationName: 'sonarqube-server'){
                     sh 'mvn sonar:sonar'
-                }
+                }*/
                 //timeout(time: 5, unit: 'MINUTES') {
                 //waitForQualityGate abortPipeline: true
                 //}
-                dependencyCheck additionalArguments: '--format HTML', odcInstallation: 'dependency-check-main'
-                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'            }
+                dependencyCheck additionalArguments: '', odcInstallation: 'dependency-check-main'
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
         }
         /*stage('upload to artifactory with plugin') {
             steps {
