@@ -4,11 +4,11 @@ pipeline {
         maven 'maven-main'
         jfrog 'jfrog-cli-main'
     }
-    environment {
-        #CI = true
-        #ARTIFACTORY_ACCESS_TOKEN = credentials('artifactory-access-token')
-        #SCANNER_HOME=tool 'sonarqube-scanner'
-    }
+    /*environment {
+        CI = true
+        ARTIFACTORY_ACCESS_TOKEN = credentials('artifactory-access-token')
+        SCANNER_HOME=tool 'sonarqube-scanner'
+    }*/
     stages {
         stage('Build product microservice') {
             steps {
@@ -16,24 +16,24 @@ pipeline {
                 sh "mvn clean install"
             }
         }
-        #stage('Sonar analysis and dependency check') {
-        #    steps {
-        #        withSonarQubeEnv(installationName: 'sonarqube1'){
-        #            sh 'mvn sonar:sonar'
-        #        }
-        #        timeout(time: 1, unit: 'MINUTES') {
-        #            waitForQualityGate abortPipeline: true
-        #        }
-        #        dependencyCheck additionalArguments: '--format HTML', odcInstallation: 'dependency-check'
-        #    }
-        #}
-        #stage('upload to artifactory with plugin') {
-        #    steps {
-        #        jf "-v"
-        #        jf "c show"
-        #        jf "rt u ./target/ecomm-product-1.0.jar ecomm-product/"
-        #    }
-        #}
+        /*stage('Sonar analysis and dependency check') {
+            steps {
+                withSonarQubeEnv(installationName: 'sonarqube1'){
+                    sh 'mvn sonar:sonar'
+                }
+                timeout(time: 1, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+                dependencyCheck additionalArguments: '--format HTML', odcInstallation: 'dependency-check'
+            }
+        }
+        stage('upload to artifactory with plugin') {
+            steps {
+                jf "-v"
+                jf "c show"
+                jf "rt u ./target/ecomm-product-1.0.jar ecomm-product/"
+            }
+        }*/
         stage('Build product docker image') {
             steps {
                 script{
