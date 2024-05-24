@@ -85,22 +85,22 @@ pipeline {
     post {
         success {
             script {
-                withCredentials([usernamePassword(credentialsId: 'github_username_token_cred', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_TOKEN')]) {
-                        sh "git remote set-url origin https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/MhamedSanaa/EOS_project.git"
-                        sh "git fetch origin"
-                        sh "git branch"
-                        sh "git remote -v"
-                        sh "git merge --strategy-option theirs origin/${env.GIT_BRANCH}"
-                        sh "git push origin pre-prod"
-                    }
-                // // Push changes to the main branch
-                // git branch: 'pre-prod', credentialsId: 'github_cred', url: 'https://github.com/MhamedSanaa/EOS_project.git'
-                // sh "git remote set-url origin https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/MhamedSanaa/EOS_project.git"
+                // withCredentials([usernamePassword(credentialsId: 'github_username_token_cred', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_TOKEN')]) {
+                //         sh "git remote set-url origin https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/MhamedSanaa/EOS_project.git"
                 //         sh "git fetch origin"
-                // sh "git branch"
-                // sh "git remote -v"
-                // sh "git merge --strategy-option theirs origin/${env.GIT_BRANCH}"
-                // sh "git push origin pre-prod"
+                //         sh "git branch"
+                //         sh "git remote -v"
+                //         sh "git merge --strategy-option theirs origin/${env.GIT_BRANCH}"
+                //         sh "git push origin pre-prod"
+                //     }
+                // Push changes to the main branch
+                git branch: 'pre-prod', credentialsId: 'github_username_token_cred', url: 'https://github.com/MhamedSanaa/EOS_project.git'
+                //sh "git remote set-url origin https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/MhamedSanaa/EOS_project.git"
+                //sh "git fetch origin"
+                sh "git branch"
+                sh "git remote -v"
+                sh "git merge --strategy-option theirs origin/${env.GIT_BRANCH}"
+                sh "git push origin pre-prod"
             }
         }
     }
