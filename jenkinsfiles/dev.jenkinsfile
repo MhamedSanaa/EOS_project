@@ -61,6 +61,20 @@ pipeline {
                 }
             }
         }
+        stage('scanning docker image') {
+            agent {
+                docker {
+                    image 'aquasec/trivy'
+                    reuseNode true
+                }
+            }
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
+                    sh "trivy version"
+                    sh "trivy image ${user}/${IMAGE_NAME}"
+                }
+            }
+        }
         stage ('Push docker image to registry') {
             steps {
                 script{
