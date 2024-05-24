@@ -64,7 +64,7 @@ pipeline {
         stage('scanning docker image') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
-                    sh "docker run --rm aquasec/trivy image ${user}/${IMAGE_NAME}"
+                    sh "docker run --rm aquasec/trivy image --download-db-only ${user}/${IMAGE_NAME}"
                 }
             }
         }
