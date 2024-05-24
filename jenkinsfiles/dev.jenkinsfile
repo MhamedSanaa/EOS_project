@@ -6,9 +6,7 @@ pipeline {
     }
     environment {
         IMAGE_NAME = GIT_BRANCH.substring(GIT_BRANCH.indexOf('dev/') + 'dev/'.length())
-        CI = true
-        ARTIFACTORY_ACCESS_TOKEN = credentials('artifactory-access-token')
-        SCANNER_HOME=tool 'sonarqube-scanner'
+        //CI = true
     }
     stages {
             stage ('printing env var'){
