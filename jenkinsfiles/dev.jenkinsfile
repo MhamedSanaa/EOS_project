@@ -16,7 +16,7 @@ pipeline {
         }
         stage('Sonarqube analysis and dependency check') {
             steps {
-                parallel(
+                parallel{
                     stage('Sonarqube analysis') {
                         steps {
                             withSonarQubeEnv(installationName: 'sonarqube-server'){
@@ -33,7 +33,7 @@ pipeline {
                             dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
                         }
                     }
-                )
+                }
             }
         }
         stage('Build product microservice') {
