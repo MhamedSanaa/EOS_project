@@ -10,6 +10,12 @@ pipeline {
         SCANNER_HOME=tool 'sonarqube-scanner'
     }*/
     stages {
+        stage ('printing env var'){
+            steps{
+                sh 'printenv'
+            }
+        }
+        }
         stage ('compile project'){
             steps {
                 sh 'mvn compile'
