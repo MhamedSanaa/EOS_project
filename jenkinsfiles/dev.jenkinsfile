@@ -11,8 +11,9 @@ pipeline {
     }*/
     stages {
         stage ('compile project'){
-            steps{
+            steps {
                 sh 'mvn compile'
+            }
         }
         stage('Sonarqube analysis and dependency check') {
             steps {
