@@ -85,8 +85,8 @@ pipeline {
     post {
         success {
             script {
-                withCredentials([usernamePassword(credentialsId: 'github_cred', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {
-                        sh "git remote set-url origin https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/MhamedSanaa/EOS_project.git"
+                withCredentials([usernamePassword(credentialsId: 'github_username_token_cred', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_TOKEN')]) {
+                        sh "git remote set-url origin https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/MhamedSanaa/EOS_project.git"
                         sh "git fetch origin"
                         sh "git branch"
                         sh "git remote -v"
