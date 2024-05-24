@@ -15,42 +15,40 @@ pipeline {
                 sh 'mvn compile'
             }
         }
-        stage('Sonarqube analysis and dependency check') {
-            steps {
-                parallel{
-                    stage('Sonarqube analysis') {
-                        steps {
-                            withSonarQubeEnv(installationName: 'sonarqube-server'){
-                                sh 'mvn sonar:sonar'
-                            }
-                            //timeout(time: 5, unit: 'MINUTES') {
-                            //waitForQualityGate abortPipeline: true
-                            //}
+        stage ('Sonarqube analysis and dependency check') {
+            parallel {
+                stage ('Sonarqube analysis') {
+                    steps {
+                        withSonarQubeEnv(installationName: 'sonarqube-server'){
+                            sh 'mvn sonar:sonar'
                         }
+                        //timeout(time: 5, unit: 'MINUTES') {
+                        //waitForQualityGate abortPipeline: true
+                        //}
                     }
-                    stage('dependency check') {
-                        steps {
-                            dependencyCheck additionalArguments: '--scan ./', odcInstallation: 'dependency-check-main'
-                            dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-                        }
+                }
+                stage ('dependency check') {
+                    steps {
+                        dependencyCheck additionalArguments: '--scan ./', odcInstallation: 'dependency-check-main'
+                        dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
                     }
                 }
             }
         }
-        stage('Build product microservice') {
+        stage ('Build product microservice') {
             steps {
                 sh "mvn -v"
                 sh "mvn clean package"
             }
         }
-        /*stage('upload to artifactory with plugin') {
+        /*stage ('upload to artifactory with plugin') {
             steps {
                 jf "-v"
                 jf "c show"
                 jf "rt u ./target/ecomm-product-1.0.jar ecomm-product/"
             }
         }*/
-        stage('Build product docker image') {
+        stage ('Build product docker image') {
             steps {
                 script{
                     withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
@@ -59,7 +57,7 @@ pipeline {
                 }
             }
         }
-        stage('Push docker image to registry') {
+        stage ('Push docker image to registry') {
             steps {
                 script{
                     withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
