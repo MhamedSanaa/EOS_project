@@ -21,7 +21,7 @@ pipeline {
             steps {
                 script{
                     withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
-                        sh "docker build -t ${user}/${IMAGE_NAME} -f ./Dockerfile.dev ."
+                        sh "docker build -t ${user}/${IMAGE_NAME}:${BUILD_ID} -f ./Dockerfile.dev ."
                     }
                 }
             }
@@ -30,7 +30,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
                     //sh "trivy image ${user}/${IMAGE_NAME}"
-                    sh "trivy image --format json -o trivy-report.json ${user}/${IMAGE_NAME}"
+                    sh "trivy image --format json -o trivy-report.json ${user}/${IMAGE_NAME}:${BUILD_ID}"
                     archiveArtifacts artifacts: '**/trivy-report.json'
                     //-v $HOME/Library/Caches:/root/.cache/
                 }
@@ -41,7 +41,7 @@ pipeline {
                 script{
                     withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
                         sh "docker login -u ${user} -p ${pwd}"
-                        sh "docker push ${user}/${IMAGE_NAME}"
+                        sh "docker push ${user}/${IMAGE_NAME}:${BUILD_ID}"
                     }
                 }
             }
