@@ -9,7 +9,6 @@ pipeline {
         jfrog 'jfrog-cli-main'
     }
     environment {
-        pre-prod/microservice-product
         IMAGE_NAME = GIT_BRANCH.substring(GIT_BRANCH.indexOf('pre-prod/') + 'pre-prod/'.length())
     }
     stages {
