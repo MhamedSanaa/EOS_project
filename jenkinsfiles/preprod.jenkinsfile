@@ -21,7 +21,7 @@ pipeline {
             steps {
                 script{
                     withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
-                        sh "docker build -t ${user}/${IMAGE_NAME} -f Dockerfile.dev ."
+                        sh "docker build -t ${user}/${IMAGE_NAME} ."
                     }
                 }
             }
