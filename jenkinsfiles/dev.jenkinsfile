@@ -86,7 +86,7 @@ pipeline {
             }
         }*/
     }
-    post {
+    /*post {
         success {
             script {
                 withCredentials([usernamePassword(credentialsId: 'github_username_token_cred', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_TOKEN')]) {
@@ -107,5 +107,5 @@ pipeline {
                 // sh "git push origin pre-prod"
             }
         }
-    }
+    }*/
 }
