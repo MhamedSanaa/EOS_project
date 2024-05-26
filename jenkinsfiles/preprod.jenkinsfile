@@ -17,6 +17,12 @@ pipeline {
                 sh 'printenv'
             }
         }
+        stage ('Build product microservice') {
+            steps {
+                sh "mvn -v"
+                sh "mvn clean package"
+            }
+        }
         stage ('Build product docker image') {
             steps {
                 script{
