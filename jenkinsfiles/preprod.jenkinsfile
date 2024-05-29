@@ -14,6 +14,7 @@ pipeline {
     stages {
         stage ('printing env var'){
             steps{
+                sh "java -v"
                 sh 'printenv'
             }
         }
@@ -26,7 +27,7 @@ pipeline {
         stage ('Build product docker image') {
             steps {
                 script{
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub_username_password_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
                         sh "docker build -t ${user}/${IMAGE_NAME} ."
                     }
                 }
@@ -34,7 +35,7 @@ pipeline {
         }
         stage('scanning docker image') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub_username_password_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
                     //sh "trivy image ${user}/${IMAGE_NAME}"
                     sh "trivy image --format json -o trivy-report.json ${user}/${IMAGE_NAME}"
                     archiveArtifacts artifacts: '**/trivy-report.json'
@@ -45,7 +46,7 @@ pipeline {
         stage ('Push docker image to registry') {
             steps {
                 script{
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub_username_password_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
                         sh "docker login -u ${user} -p ${pwd}"
                         sh "docker push ${user}/${IMAGE_NAME}"
                     }
