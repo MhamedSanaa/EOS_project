@@ -27,11 +27,12 @@ pipeline {
             steps {
                 script{
                     withCredentials([usernamePassword(credentialsId: 'dockerhub_username_password_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
-                        sh "docker build -t ${user}/${IMAGE_NAME}:${BUILD_ID} ."
+                        sh "docker build -t ${user}/${IMAGE_NAME}:${BUILD_ID} -f Dockerfile.dev ."
                     }
                 }
             }
         }
+        //this works
         // stage('scanning docker image') {
         //     steps {
         //         withCredentials([usernamePassword(credentialsId: 'dockerhub_username_password_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
