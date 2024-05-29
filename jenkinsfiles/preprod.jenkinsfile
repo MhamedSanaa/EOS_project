@@ -14,7 +14,6 @@ pipeline {
     stages {
         stage ('printing env var'){
             steps{
-                sh "java -v"
                 sh 'printenv'
             }
         }
