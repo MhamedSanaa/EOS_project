@@ -63,10 +63,6 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'github_username_token_cred', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_TOKEN')]) {
                     sh "git remote set-url origin https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/MhamedSanaa/EOS_project.git"
                     sh "git fetch origin"
-                    sh "git branch"
-                    sh "git status"
-                    sh "gh --version"
-                    sh "git remote -v"
                     sh "git merge --strategy-option theirs origin/${env.GIT_BRANCH}"
                     sh "git push origin pre-prod/${IMAGE_NAME}"
                 }
