@@ -64,6 +64,7 @@ pipeline {
                     sh "git remote -v"
                     sh "git pull --all"
                     sh "git fetch --all"
+                    sh "git branch -a"
                 }
             }
         }
