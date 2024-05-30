@@ -61,12 +61,33 @@ pipeline {
         success {
             script {
                 withCredentials([usernamePassword(credentialsId: 'github_username_token_cred', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_TOKEN')]) {
-                    sh "git remote -v"
-                    sh "git pull --all"
+                    // Set remote URL for authentication
+                    sh "git remote set-url origin https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/MhamedSanaa/EOS_project.git"
+                    
+                    // Fetch all branches and tags
                     sh "git fetch --all"
+                    sh "git fetch --tags"
+                    
+                    // List all branches (local and remote)
                     sh "git branch -a"
-                    sh "git fetch origin"
-                    sh "git branch -a"
+                    
+                    // Ensure the local repository is up to date with remote references
+                    sh "git remote update"
+                    
+                    // Prune deleted branches from the remote
+                    sh "git remote prune origin"
+                    
+                    // List remote branches
+                    sh "git branch -r"
+                    
+                    // Checkout the desired branch
+                    sh "git checkout pre-prod/${IMAGE_NAME}"
+                    
+                    // Merge changes from the current branch
+                    sh "git merge --strategy-option theirs origin/${env.GIT_BRANCH}"
+                    
+                    // Push changes to the remote branch
+                    sh "git push origin pre-prod/${IMAGE_NAME}"
                 }
             }
         }
