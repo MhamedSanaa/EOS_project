@@ -61,16 +61,16 @@ pipeline {
         success {
             script {
                 withCredentials([usernamePassword(credentialsId: 'github_username_token_cred', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_TOKEN')]) {
-                    sh "git remote set-url origin https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/MhamedSanaa/EOS_project.git"
-
+                    //sh "git remote set-url origin https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/MhamedSanaa/EOS_project.git"
+                    sh "git config --get remote.origin.url"
                     // Fetch all branches from the remote repository
-                    sh "git fetch --all"
+                    sh "git fetch origin --all"
 
                     // Checkout the desired branch
                     sh "git checkout pre-prod/${IMAGE_NAME}"
 
                     // Merge changes from the current branch
-                    sh "git merge --strategy-option theirs origin/${env.GIT_BRANCH}"
+                    sh "git merge --strategy-option theirs ${env.GIT_BRANCH}"
 
                     // Push changes to the remote branch
                     sh "git push origin pre-prod/${IMAGE_NAME}"
