@@ -65,6 +65,8 @@ pipeline {
                     sh "git pull --all"
                     sh "git fetch --all"
                     sh "git branch -a"
+                    sh "git fetch origin"
+                    sh "git branch -a"
                 }
             }
         }
