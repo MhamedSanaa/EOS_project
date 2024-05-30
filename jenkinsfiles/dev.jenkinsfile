@@ -49,13 +49,13 @@ pipeline {
                 sh "mvn clean package"
             }
         }
-        /*stage ('upload to artifactory with plugin') {
+        stage ('upload to artifactory with plugin') {
             steps {
                 jf "-v"
                 jf "c show"
-                jf "rt u ./target/ecomm-product-1.0.jar ecomm-product/"
+                jf "rt u --flat ./target/ecomm-product-1.0.jar ${IMAGE_NAME}/"
             }
-        }*/
+        }
     }
     post {
         success {
