@@ -62,7 +62,9 @@ pipeline {
             script {
                 // Set remote URL for authentication
                 git branch: 'master', credentialsId: 'github_username_token_cred', url: 'https://github.com/MhamedSanaa/EOS_project.git'                    
-                
+                withCredentials([usernamePassword(credentialsId: 'github_username_token_cred', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_TOKEN')]) {
+                        sh "git remote set-url origin https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/MhamedSanaa/EOS_project.git"
+                    }
                 // Checkout the desired branch
                 sh "git checkout origin/pre-prod/${IMAGE_NAME}"
                 
