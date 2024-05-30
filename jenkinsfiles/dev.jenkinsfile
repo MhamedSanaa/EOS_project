@@ -61,7 +61,7 @@ pipeline {
         success {
             script {
                 withCredentials([usernamePassword(credentialsId: 'github_username_token_cred', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_TOKEN')]) {
-                    sh "git remote"
+                    sh "git remote -v"
                 }
             }
         }
