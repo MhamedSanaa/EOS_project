@@ -62,7 +62,7 @@ pipeline {
             script {
                 withCredentials([usernamePassword(credentialsId: 'github_username_token_cred', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_TOKEN')]) {
                     // Set remote URL for authentication
-                    git branch: 'pre-prod', credentialsId: 'github_username_token_cred', url: 'https://github.com/MhamedSanaa/EOS_project.git'                    
+                    git branch: 'master', credentialsId: 'github_username_token_cred', url: 'https://github.com/MhamedSanaa/EOS_project.git'                    
                     
                     // List all branches (local and remote)
                     sh "git branch -a"
