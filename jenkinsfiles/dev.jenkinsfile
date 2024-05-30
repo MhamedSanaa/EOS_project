@@ -62,6 +62,9 @@ pipeline {
             script {
                 withCredentials([usernamePassword(credentialsId: 'github_username_token_cred', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_TOKEN')]) {
                     sh "git remote set-url origin https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/MhamedSanaa/EOS_project.git"
+                    sh "git branch -a"
+                    sh "git ls-remote --heads origin"
+                    sh "git branch"
                     sh "git fetch origin"
                     sh "git checkout pre-prod/${IMAGE_NAME}"
                     sh "git merge --strategy-option theirs origin/${env.GIT_BRANCH}"
