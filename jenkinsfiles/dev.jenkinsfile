@@ -56,48 +56,19 @@ pipeline {
                 jf "rt u ./target/ecomm-product-1.0.jar ecomm-product/"
             }
         }*/
-        stage ('Build product docker image') {
-            steps {
-                script{
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
-                        sh "docker build -t ${user}/${IMAGE_NAME} ."
-                    }
-                }
-            }
-        }
-        stage('scanning docker image') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
-                    //sh "trivy image ${user}/${IMAGE_NAME}"
-                    sh "trivy image --format json -o trivy-report.json ${user}/${IMAGE_NAME}"
-                    archiveArtifacts artifacts: '**/trivy-report.json'
-                    //-v $HOME/Library/Caches:/root/.cache/
-                }
-            }
-        }
-        stage ('Push docker image to registry') {
-            steps {
-                script{
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
-                        sh "docker login -u ${user} -p ${pwd}"
-                        sh "docker push ninjaops/microservice-product"
-                    }
+    }
+    post {
+        success {
+            script {
+                withCredentials([usernamePassword(credentialsId: 'github_username_token_cred', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_TOKEN')]) {
+                    sh "git remote set-url origin https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/MhamedSanaa/EOS_project.git"
+                    sh "git fetch origin"
+                    sh "git branch"
+                    // sh "git remote -v"
+                    // sh "git merge --strategy-option theirs origin/${env.GIT_BRANCH}"
+                    // sh "git push origin pre-prod/${IMAGE_NAME}"
                 }
             }
         }
     }
-    // post {
-    //     success {
-    //         script {
-    //             withCredentials([usernamePassword(credentialsId: 'github_username_token_cred', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_TOKEN')]) {
-    //                 sh "git remote set-url origin https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/MhamedSanaa/EOS_project.git"
-    //                 sh "git fetch origin"
-    //                 sh "git branch"
-    //                 sh "git remote -v"
-    //                 sh "git merge --strategy-option theirs origin/${env.GIT_BRANCH}"
-    //                 sh "git push origin pre-prod/${IMAGE_NAME}"
-    //             }
-    //         }
-    //     }
-    // }
 }
