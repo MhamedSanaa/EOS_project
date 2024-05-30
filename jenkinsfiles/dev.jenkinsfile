@@ -64,7 +64,7 @@ pipeline {
                     //sh "git remote set-url origin https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/MhamedSanaa/EOS_project.git"
                     sh "git config --get remote.origin.url"
                     // Fetch all branches from the remote repository
-                    sh "git fetch origin --all"
+                    sh "git fetch --all"
 
                     // Checkout the desired branch
                     sh "git checkout pre-prod/${IMAGE_NAME}"
