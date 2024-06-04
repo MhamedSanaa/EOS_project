@@ -43,7 +43,7 @@ pipeline {
                 }
             }
         }
-        stage ('Build product microservice') {
+        stage ('Build gateway microservice') {
             steps {
                 sh "mvn -v"
                 sh "mvn clean package"
