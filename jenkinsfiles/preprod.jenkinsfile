@@ -1,0 +1,57 @@
+//the higher branch from the preprod    will be the release     you will use verisoning realse-1.2 and tryin to work with versions will rely on pull request
+//the higher branch from the dev        will be the pre-prod    used for testing env you will use kubernetes on vm plus other testing prams will rely on pull request
+//this used for dev environment it build incoming changes from sub branches
+//the lower branch from the dev         will be the local/feature you will vreate these branches from the dev branch of specific microservice to be devolopped localy then merge the branch back and delete to the dev branch
+pipeline {
+    agent any
+    tools{
+        maven 'maven-main'
+        jfrog 'jfrog-cli-main'
+    }
+    environment {
+        IMAGE_NAME = GIT_BRANCH.substring(GIT_BRANCH.indexOf('pre-prod/') + 'pre-prod/'.length())
+    }
+    stages {
+        stage ('printing env var'){
+            steps{
+                sh 'printenv'
+            }
+        }
+        stage ('Build product microservice') {
+            steps {
+                sh "mvn -v"
+                sh "mvn clean package"
+            }
+        }
+        stage ('Build product docker image') {
+            steps {
+                script{
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub_username_password_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
+                        sh "docker build -t ${user}/${IMAGE_NAME}:${BUILD_ID} -f Dockerfile.dev ."
+                    }
+                }
+            }
+        }
+        //this works
+        // stage('scanning docker image') {
+        //     steps {
+        //         withCredentials([usernamePassword(credentialsId: 'dockerhub_username_password_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
+        //             //sh "trivy image ${user}/${IMAGE_NAME}"
+        //             sh "trivy image --format json -o trivy-report.json ${user}/${IMAGE_NAME}"
+        //             archiveArtifacts artifacts: '**/trivy-report.json'
+        //             //-v $HOME/Library/Caches:/root/.cache/
+        //         }
+        //     }
+        // }
+        stage ('Push docker image to registry') {
+            steps {
+                script{
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub_username_password_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
+                        sh "docker login -u ${user} -p ${pwd}"
+                        sh "docker push ${user}/${IMAGE_NAME}:${BUILD_ID}"
+                    }
+                }
+            }
+        }
+    }
+}
