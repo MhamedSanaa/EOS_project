@@ -18,44 +18,44 @@ pipeline {
                 sh 'printenv'
             }
         }
-        // stage ('compile project'){
-        //     steps {
-        //         sh 'mvn compile'
-        //     }
-        // }
-        // stage ('Sonarqube analysis and dependency check') {
-        //     parallel {
-        //         stage ('Sonarqube analysis') {
-        //             steps {
-        //                 withSonarQubeEnv(installationName: 'sonarqube-server'){
-        //                     sh 'mvn sonar:sonar'
-        //                 }
-        //                 timeout(time: 5, unit: 'MINUTES') {
-        //                 waitForQualityGate abortPipeline: true
-        //                 }
-        //             }
-        //         }
-        //         stage ('dependency check') {
-        //             steps {
-        //                 dependencyCheck additionalArguments: '', odcInstallation: 'dependency-check-main'
-        //                 dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-        //             }
-        //         }
-        //     }
-        // }
-        // stage ('Build product microservice') {
-        //     steps {
-        //         sh "mvn -v"
-        //         sh "mvn clean package"
-        //     }
-        // }
-        // stage ('upload to artifactory with plugin') {
-        //     steps {
-        //         jf "-v"
-        //         jf "c show"
-        //         jf "rt u --flat ./target/ecomm-product-1.0.jar ${IMAGE_NAME}/"
-        //     }
-        // }
+        stage ('compile project'){
+            steps {
+                sh 'mvn compile'
+            }
+        }
+        stage ('Sonarqube analysis and dependency check') {
+            parallel {
+                stage ('Sonarqube analysis') {
+                    steps {
+                        withSonarQubeEnv(installationName: 'sonarqube-server'){
+                            sh 'mvn sonar:sonar'
+                        }
+                        timeout(time: 5, unit: 'MINUTES') {
+                        waitForQualityGate abortPipeline: true
+                        }
+                    }
+                }
+                stage ('dependency check') {
+                    steps {
+                        dependencyCheck additionalArguments: '', odcInstallation: 'dependency-check-main'
+                        dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+                    }
+                }
+            }
+        }
+        stage ('Build cart microservice') {
+            steps {
+                sh "mvn -v"
+                sh "mvn clean package"
+            }
+        }
+        stage ('upload to artifactory with plugin') {
+            steps {
+                jf "-v"
+                jf "c show"
+                jf "rt u --flat ./target/ecomm-cart-1.0.jar ${IMAGE_NAME}/"
+            }
+        }
     }
     // post {
     //     success {
