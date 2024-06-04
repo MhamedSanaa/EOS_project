@@ -16,7 +16,7 @@ pipeline {
         stage ('build project'){
             steps {
                 sh 'npm clean-install'
-                sh 'npm build'
+                sh 'npm run build'
             }
         }
         stage ('Sonarqube analysis and dependency check') {
