@@ -57,18 +57,18 @@ pipeline {
         //     }
         // }
     }
-    post {
-        success {
-            script {
-                // Set remote URL for authentication
-                git branch: "pre-prod/${IMAGE_NAME}", credentialsId: 'github_username_token_cred', url: 'https://github.com/MhamedSanaa/EOS_project.git'
+    // post {
+    //     success {
+    //         script {
+    //             // Set remote URL for authentication
+    //             git branch: "pre-prod/${IMAGE_NAME}", credentialsId: 'github_username_token_cred', url: 'https://github.com/MhamedSanaa/EOS_project.git'
                 
-                // Merge changes from the current branch
-                sh "git merge --strategy-option theirs origin/${env.GIT_BRANCH}"
+    //             // Merge changes from the current branch
+    //             sh "git merge --strategy-option theirs origin/${env.GIT_BRANCH}"
                 
-                // Push changes to the remote branch
-                sh "git push origin origin/pre-prod/${IMAGE_NAME}"
-            }
-        }
-    }
+    //             // Push changes to the remote branch
+    //             sh "git push origin origin/pre-prod/${IMAGE_NAME}"
+    //         }
+    //     }
+    // }
 }
