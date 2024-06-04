@@ -4,8 +4,6 @@
 //the lower branch from the dev         will be the local/feature you will vreate these branches from the dev branch of specific microservice to be devolopped localy then merge the branch back and delete to the dev branch
 pipeline {
     agent any
-    tools{
-    }
     environment {
         IMAGE_NAME = GIT_BRANCH.substring(GIT_BRANCH.indexOf('dev/') + 'dev/'.length())
     }
