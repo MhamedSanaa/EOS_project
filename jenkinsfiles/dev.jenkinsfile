@@ -5,6 +5,7 @@
 pipeline {
     agent any
     environment {
+        CI = false
         IMAGE_NAME = GIT_BRANCH.substring(GIT_BRANCH.indexOf('dev/') + 'dev/'.length())
         FRONTEND_HOST="localhost"
         BACKEND_HOST="localhost"
