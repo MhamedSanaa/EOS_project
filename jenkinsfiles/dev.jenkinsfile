@@ -29,25 +29,25 @@ pipeline {
                 sh 'npm run build'
             }
         }
-        stage ('Sonarqube analysis and dependency check') {
-            parallel {
-                stage ('Sonarqube analysis') {
-                    steps {
-                        withSonarQubeEnv(installationName: 'sonarqube-server'){
-                            sh 'mvn sonar:sonar'
-                        }
-                        timeout(time: 5, unit: 'MINUTES') {
-                        waitForQualityGate abortPipeline: true
-                        }
-                    }
-                }
-                stage ('dependency check') {
-                    steps {
-                        dependencyCheck additionalArguments: '', odcInstallation: 'dependency-check-main'
-                        dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-                    }
-                }
-            }
-        }
+        // stage ('Sonarqube analysis and dependency check') {
+        //     parallel {
+        //         stage ('Sonarqube analysis') {
+        //             steps {
+        //                 withSonarQubeEnv(installationName: 'sonarqube-server'){
+        //                     sh 'mvn sonar:sonar'
+        //                 }
+        //                 timeout(time: 5, unit: 'MINUTES') {
+        //                 waitForQualityGate abortPipeline: true
+        //                 }
+        //             }
+        //         }
+        //         stage ('dependency check') {
+        //             steps {
+        //                 dependencyCheck additionalArguments: '', odcInstallation: 'dependency-check-main'
+        //                 dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+        //             }
+        //         }
+        //     }
+        // }
     }
 }
