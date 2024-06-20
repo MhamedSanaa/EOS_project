@@ -10,7 +10,6 @@ pipeline {
         BACKEND_HOST="localhost"
         FRONTEND_PORT="8888"
         BACKEND_PORT="8091"
-
         REACT_APP_SERVER_BASE_URL="http://${BACKEND_HOST}:${BACKEND_PORT}"
         REACT_APP_WS_BASE_URL="ws://${FRONTEND_HOST}:${FRONTEND_PORT}"
         NODE_ENV="production"
@@ -24,6 +23,8 @@ pipeline {
         }
         stage ('build project'){
             steps {
+                sh 'npm install'
+                sh 'npm audit fix'
                 sh 'npm clean-install'
                 sh 'npm run build'
             }
