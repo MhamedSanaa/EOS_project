@@ -1,9 +1,5 @@
 pipeline {
     agent any
-    tools{
-        maven 'maven-main'
-        jfrog 'jfrog-cli-main'
-    }
     environment {
         IMAGE_NAME = GIT_BRANCH.substring(GIT_BRANCH.indexOf('dev/') + 'dev/'.length())
     }
