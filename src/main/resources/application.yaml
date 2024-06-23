@@ -5,31 +5,31 @@ management:
   endpoint:
     gateway:
       enabled: true
-
+# 172.17.0.1
 spring:
   cloud:
     gateway:
       routes:
         - id: ecomm-user
-          uri: http://172.17.0.1:8080/
+          uri: http://HOST_URL:8080/
           predicates:
             - Path=/user/**, /address/**, /user/*/**, /admin/user/**
           filters:
             - PrefixPath=/api
         - id: ecomm-product
-          uri: http://172.17.0.1:8081/
+          uri: http://HOST_URL:8081/
           predicates:
             - Path=/product/**, /category/**, /admin/**, /inventory/**, /brand/**
           filters:
             - PrefixPath=/api
         - id: ecomm-cart
-          uri: http://172.17.0.1:8082/
+          uri: http://HOST_URL:8082/
           predicates:
             - Path=/cart/**
           filters:
             - PrefixPath=/api
         - id: ecomm-order
-          uri: http://172.17.0.1:8083/
+          uri: http://HOST_URL:8083/
           predicates:
             - Path=/order/**, /stripe/**
           filters:
