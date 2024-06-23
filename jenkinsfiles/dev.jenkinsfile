@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+    tools{
+        maven 'maven-main'
+        jfrog 'jfrog-cli-main'
+    }
+    environment {
+        IMAGE_NAME = GIT_BRANCH.substring(GIT_BRANCH.indexOf('dev/') + 'dev/'.length())
+    }
+    stages {
+        stage ('printing env var'){
+            steps{
+                sh 'printenv'
+            }
+        }
+        stage ('Build product docker image') {
+            steps {
+                script{
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub_username_password_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
+                        sh "docker build -t ${user}/${IMAGE_NAME}:${BUILD_ID} -f Dockerfile.dev ."
+                    }
+                }
+            }
+        }
+        stage ('Push docker image to registry') {
+            steps {
+                script{
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub_username_password_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
+                        sh "docker login -u ${user} -p ${pwd}"
+                        sh "docker push ${user}/${IMAGE_NAME}:${BUILD_ID}"
+                    }
+                }
+            }
+        }
+    }
+}
