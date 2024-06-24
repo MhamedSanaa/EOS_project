@@ -11,25 +11,25 @@ spring:
     gateway:
       routes:
         - id: ecomm-user
-          uri: http://${HOST_URL}:8080/
+          uri: http://${USER_SERVICE_URL}:${USER_SERVICE_URLPORT}/
           predicates:
             - Path=/user/**, /address/**, /user/*/**, /admin/user/**
           filters:
             - PrefixPath=/api
         - id: ecomm-product
-          uri: http://${HOST_URL}:8081/
+          uri: http://${PRODUCT_SERVICE_URL}:${PRODUCT_SERVICE_PORT}/
           predicates:
             - Path=/product/**, /category/**, /admin/**, /inventory/**, /brand/**
           filters:
             - PrefixPath=/api
         - id: ecomm-cart
-          uri: http://${HOST_URL}:8082/
+          uri: http://${CART_SERVICE_URL}:${CART_SERVICE_PORT}/
           predicates:
             - Path=/cart/**
           filters:
             - PrefixPath=/api
         - id: ecomm-order
-          uri: http://${HOST_URL}:8083/
+          uri: http://${ORDER_SERVICE_URL}:${ORDER_SERVICE_PORT}/
           predicates:
             - Path=/order/**, /stripe/**
           filters:
