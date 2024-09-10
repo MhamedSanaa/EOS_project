@@ -2,15 +2,15 @@
 ARG NODE_VERSION=20.9.0
 FROM node:${NODE_VERSION}-alpine AS build
 
-# Build arguments for backend and frontend host/port
-ARG BACKEND_HOST=192.168.1.14
-ARG BACKEND_PORT=8091
+# # Build arguments for backend and frontend host/port
+# ARG BACKEND_HOST=192.168.1.14
+# ARG BACKEND_PORT=8091
 
-# Set environment variables for the React app
-ENV REACT_APP_SERVER_BASE_URL=http://${BACKEND_HOST}:${BACKEND_PORT}
-ENV REACT_APP_WS_BASE_URL=ws://${BACKEND_HOST}:${BACKEND_PORT}/ws/events
-ENV NODE_ENV=production
-ENV PUBLIC_URL=/
+# # Set environment variables for the React app
+# ENV REACT_APP_SERVER_BASE_URL=http://${BACKEND_HOST}:${BACKEND_PORT}
+# ENV REACT_APP_WS_BASE_URL=ws://${BACKEND_HOST}:${BACKEND_PORT}/ws/events
+# ENV NODE_ENV=production
+# ENV PUBLIC_URL=/
 
 # Create app directory
 WORKDIR /app
