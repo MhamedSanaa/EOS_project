@@ -1,7 +1,8 @@
 import axios from "axios";
 import StorageUtils from "../utils/storageUtils";
 axios.defaults.headers.common["X-Requested-With"] = "XmlHttpRequest";
-axios.defaults.baseURL = process.env.REACT_APP_SERVER_BASE_URL;
+axios.defaults.baseURL = "http://192.168.199.134:31120";
+//axios.defaults.baseURL = process.env.REACT_APP_SERVER_BASE_URL;
 axios.defaults.withCredentials = true;
 
 export const Response = (res) => {
