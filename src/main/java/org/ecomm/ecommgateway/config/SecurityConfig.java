@@ -73,6 +73,8 @@ public class SecurityConfig {
     corsConfiguration.setAllowCredentials(true);
     corsConfiguration.addAllowedHeader("*");
     corsConfiguration.addAllowedOrigin("*");
+    corsConfiguration.addAllowedOrigin("http://192.168.199.134:31000");
+    corsConfiguration.addAllowedOrigin("https://192.168.199.134:31001");
     corsConfiguration.addAllowedOrigin("http://192.168.1.14");
     corsConfiguration.addAllowedOrigin("https://192.168.1.14");
     corsConfiguration.addAllowedOrigin("http://192.168.1.14:8888");
