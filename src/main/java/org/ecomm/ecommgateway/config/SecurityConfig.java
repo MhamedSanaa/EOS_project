@@ -66,7 +66,7 @@ public class SecurityConfig {
   }
 
   private CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration corsConfiguration = new CorsConfiguration().add;
+    CorsConfiguration corsConfiguration = new CorsConfiguration();
     corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
     corsConfiguration.setAllowedHeaders(
         Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
