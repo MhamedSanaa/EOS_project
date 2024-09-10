@@ -72,7 +72,6 @@ public class SecurityConfig {
         Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
     corsConfiguration.setAllowCredentials(true);
     corsConfiguration.addAllowedHeader("*");
-    corsConfiguration.addAllowedOrigin("*");
     corsConfiguration.addAllowedOrigin("http://192.168.199.134:31000");
     corsConfiguration.addAllowedOrigin("https://192.168.199.134:31001");
     corsConfiguration.addAllowedOrigin("http://192.168.1.14");
@@ -80,11 +79,6 @@ public class SecurityConfig {
     corsConfiguration.addAllowedOrigin("http://192.168.1.14:8888");
     corsConfiguration.addAllowedOrigin("http://localhost:8888");
     corsConfiguration.addAllowedOrigin("http://localhost:3000");
-    corsConfiguration.addAllowedOrigin("https://ecomm-ui-kappa.vercel.app");
-    corsConfiguration.addAllowedOrigin(
-        "https://ecomm-ui-git-master-conservativeasslovers-projects.vercel.app");
-    corsConfiguration.addAllowedOrigin("*");
-    corsConfiguration.addAllowedOriginPattern("*");
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", corsConfiguration);
     return source;
