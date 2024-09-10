@@ -174,7 +174,7 @@ const ProductDetails = ({ addCount }) => {
                   py={{ base: 10, md: 18 }}
                 >
                   <Flex>
-                    <Image
+                    {/* <Image
                       rounded={"md"}
                       alt={"product image"}
                       src={
@@ -187,7 +187,7 @@ const ProductDetails = ({ addCount }) => {
                       align={"center"}
                       w={"100%"}
                       h={{ base: "100%", sm: "400px", lg: "500px" }}
-                    />
+                    /> */}
                   </Flex>
                   <Stack spacing={{ base: 6, md: 10 }}>
                     <Box as={"header"}>
