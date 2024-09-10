@@ -66,18 +66,23 @@ public class SecurityConfig {
   }
 
   private CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration corsConfiguration = new CorsConfiguration();
+    CorsConfiguration corsConfiguration = new CorsConfiguration().add;
     corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
     corsConfiguration.setAllowedHeaders(
         Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
     corsConfiguration.setAllowCredentials(true);
     corsConfiguration.addAllowedHeader("*");
     corsConfiguration.addAllowedOrigin("*");
-    // corsConfiguration.addAllowedOrigin("http://localhost:8888");
-    // corsConfiguration.addAllowedOrigin("http://localhost:3000");
-    // corsConfiguration.addAllowedOrigin("https://ecomm-ui-kappa.vercel.app");
-    // corsConfiguration.addAllowedOrigin(
-    //     "https://ecomm-ui-git-master-conservativeasslovers-projects.vercel.app");
+    corsConfiguration.addAllowedOrigin("http://192.168.1.14");
+    corsConfiguration.addAllowedOrigin("https://192.168.1.14");
+    corsConfiguration.addAllowedOrigin("http://192.168.1.14:8888");
+    corsConfiguration.addAllowedOrigin("http://localhost:8888");
+    corsConfiguration.addAllowedOrigin("http://localhost:3000");
+    corsConfiguration.addAllowedOrigin("https://ecomm-ui-kappa.vercel.app");
+    corsConfiguration.addAllowedOrigin(
+        "https://ecomm-ui-git-master-conservativeasslovers-projects.vercel.app");
+    corsConfiguration.addAllowedOrigin("*");
+    corsConfiguration.addAllowedOriginPattern("*");
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", corsConfiguration);
     return source;
