@@ -53,22 +53,8 @@ pipeline {
             steps {
                 jf "-v"
                 jf "c show"
-                jf "rt u --flat ./target/ecomm-user-1.0.jar ${IMAGE_NAME}/"
+                jf "rt u --flat ./target/${IMAGE_NAME}-${BUILD_ID}.jar ${IMAGE_NAME}/"
             }
         }
     }
-    // post {
-    //     success {
-    //         script {
-    //             // Set remote URL for authentication
-    //             git branch: "pre-prod/${IMAGE_NAME}", credentialsId: 'github_username_token_cred', url: 'https://github.com/MhamedSanaa/EOS_project.git'
-                
-    //             // Merge changes from the current branch
-    //             sh "git merge --strategy-option theirs origin/${env.GIT_BRANCH}"
-                
-    //             // Push changes to the remote branch
-    //             sh "git push origin origin/pre-prod/${IMAGE_NAME}"
-    //         }
-    //     }
-    // }
 }
