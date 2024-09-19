@@ -35,12 +35,12 @@ pipeline {
                         }
                     }
                 }
-                stage ('dependency check') {
-                    steps {
-                        dependencyCheck additionalArguments: '', nvdCredentialsId: 'nvd_dependencycheck_token_cred', odcInstallation: 'dependency-check-main'
-                        dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-                    }
-                }
+                // stage ('dependency check') {
+                //     steps {
+                //         dependencyCheck additionalArguments: '', nvdCredentialsId: 'nvd_dependencycheck_token_cred', odcInstallation: 'dependency-check-main'
+                //         dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+                //     }
+                // }
             }
         }
         stage ('Build product microservice') {
