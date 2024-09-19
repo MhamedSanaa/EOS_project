@@ -53,7 +53,7 @@ pipeline {
             steps {
                 jf "-v"
                 jf "c show"
-                jf "rt u --flat ./target/${IMAGE_NAME}-${BUILD_ID}.jar ${IMAGE_NAME}/"
+                jf "rt u --flat ./target/ecomm-cart-1.0.jar ${IMAGE_NAME}/"
             }
         }
     }
