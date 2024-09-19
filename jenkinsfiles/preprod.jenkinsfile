@@ -32,7 +32,6 @@ pipeline {
                 }
             }
         }
-        this works
         stage('scanning docker image') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub_username_password_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
