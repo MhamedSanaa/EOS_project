@@ -9,8 +9,7 @@ pipeline {
         jfrog 'jfrog-cli-main'
     }
     environment {
-        IMAGE_NAME = GIT_BRANCH.substring(GIT_BRANCH.indexOf('dev/') + 'dev/'.length())
-        //CI = true
+        IMAGE_NAME = GIT_BRANCH.substring(GIT_BRANCH.indexOf('pre-prod/') + 'pre-prod/'.length())
     }
     stages {
         stage ('printing env var'){
@@ -18,56 +17,40 @@ pipeline {
                 sh 'printenv'
             }
         }
+        stage ('Build product microservice') {
+            steps {
+                sh "mvn -v"
+                sh "mvn clean package"
+            }
+        }
         stage ('Build product docker image') {
             steps {
                 script{
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
-                        sh "docker build -t image_name -f ./Dockerfile.dev ."
-                        sh "docker build -t ${user}/${IMAGE_NAME} ."
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub_username_password_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
+                        sh "docker build -t ${user}/${IMAGE_NAME}:${BUILD_ID} -f Dockerfile.dev ."
                     }
                 }
             }
         }
-        stage('scanning docker image') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
-                    //sh "trivy image ${user}/${IMAGE_NAME}"
-                    sh "trivy image --format json -o trivy-report.json ${user}/${IMAGE_NAME}"
-                    archiveArtifacts artifacts: '**/trivy-report.json'
-                    //-v $HOME/Library/Caches:/root/.cache/
-                }
-            }
-        }
-        /*stage ('Push docker image to registry') {
+        //this works
+        // stage('scanning docker image') {
+        //     steps {
+        //         withCredentials([usernamePassword(credentialsId: 'dockerhub_username_password_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
+        //             //sh "trivy image ${user}/${IMAGE_NAME}"
+        //             sh "trivy image --format json -o trivy-report.json ${user}/${IMAGE_NAME}"
+        //             archiveArtifacts artifacts: '**/trivy-report.json'
+        //             //-v $HOME/Library/Caches:/root/.cache/
+        //         }
+        //     }
+        // }
+        stage ('Push docker image to registry') {
             steps {
                 script{
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub_username_password_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
                         sh "docker login -u ${user} -p ${pwd}"
-                        sh "docker push ${user}/${IMAGE_NAME}"
+                        sh "docker push ${user}/${IMAGE_NAME}:${BUILD_ID}"
                     }
                 }
-            }
-        }*/
-    }
-    post {
-        success {
-            script {
-                withCredentials([usernamePassword(credentialsId: 'github_username_token_cred', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_TOKEN')]) {
-                        sh "git remote set-url origin https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/MhamedSanaa/EOS_project.git"
-                        sh "git fetch origin"
-                        sh "git branch"
-                        sh "git remote -v"
-                        sh "git merge --strategy-option theirs origin/${env.GIT_BRANCH}"
-                        sh "git push origin pre-prod"
-                    }
-                // Push changes to the main branch
-                // git branch: 'pre-prod', credentialsId: 'github_username_token_cred', url: 'https://github.com/MhamedSanaa/EOS_project.git'
-                // sh "git remote set-url origin https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/MhamedSanaa/EOS_project.git"
-                // //sh "git fetch origin"
-                // sh "git branch"
-                // sh "git remote -v"
-                // sh "git merge --strategy-option theirs origin/${env.GIT_BRANCH}"
-                // sh "git push origin pre-prod"
             }
         }
     }
