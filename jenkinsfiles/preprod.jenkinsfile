@@ -42,6 +42,9 @@ pipeline {
             }
         }
         stage ('Push docker image to registry') {
+            when {
+                expression { env.GIT_BRANCH } // Condition to run this stage
+            }
             steps {
                 script{
                     withCredentials([usernamePassword(credentialsId: 'dockerhub_username_password_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
