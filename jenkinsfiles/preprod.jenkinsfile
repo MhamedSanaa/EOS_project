@@ -10,7 +10,7 @@ pipeline {
     }
     environment {
         IMAGE_NAME = getImageName(env.CHANGE_TARGET, env.GIT_BRANCH)
-        IMAGE_TAG = getImageTag(env.CHANGE_ID, env.BUILD_TAG)
+        IMAGE_TAG = getImageTag(env.CHANGE_ID, env.BUILD_ID)
     }
     stages {
         stage ('printing env var'){
