@@ -59,7 +59,7 @@ pipeline {
 def getImageName(String changeTarget, String gitBranch) {
     if (changeTarget) {
         // Use CHANGE_TARGET for PR jobs
-        return changeTarget.substring(changeTargetfix.indexOf('pre-prod/') + 'pre-prod/'.length())
+        return changeTarget.substring(changeTarget.indexOf('pre-prod/') + 'pre-prod/'.length())
     } else if (gitBranch) {
         // Use GIT_BRANCH for after-merge jobs
         return gitBranch.substring(gitBranch.indexOf('pre-prod/') + 'pre-prod/'.length())
