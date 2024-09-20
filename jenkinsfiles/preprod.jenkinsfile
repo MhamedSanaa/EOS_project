@@ -1,0 +1,77 @@
+//the higher branch from the preprod    will be the release     you will use verisoning realse-1.2 and tryin to work with versions will rely on pull request
+//the higher branch from the dev        will be the pre-prod    used for testing env you will use kubernetes on vm plus other testing prams will rely on pull request
+//this used for dev environment it build incoming changes from sub branches
+//the lower branch from the dev         will be the local/feature you will vreate these branches from the dev branch of specific microservice to be devolopped localy then merge the branch back and delete to the dev branch
+pipeline {
+    agent any
+    tools{
+        maven 'maven-main'
+        jfrog 'jfrog-cli-main'
+    }
+    environment {
+        IMAGE_NAME = getImageName(env.CHANGE_TARGET, env.GIT_BRANCH)
+        IMAGE_TAG = getImageTag(env.CHANGE_ID, env.BUILD_ID)
+    }
+    stages {
+        stage ('printing env var'){
+            steps{
+                sh 'printenv'
+            }
+        }
+        stage ('Build product microservice') {
+            steps {
+                sh "mvn -v"
+                sh "mvn clean package"
+            }
+        }
+        stage ('Build product docker image') {
+            steps {
+                script{
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub_username_password_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
+                        sh "docker build -t ${user}/${IMAGE_NAME}:${IMAGE_TAG} -f Dockerfile.dev ."
+                    }
+                }
+            }
+        }
+        stage('scanning docker image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub_username_password_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
+                    sh "trivy image --format json -o trivy-report.json ${user}/${IMAGE_NAME}:${IMAGE_TAG}"
+                    archiveArtifacts artifacts: '**/trivy-report.json'
+                }
+            }
+        }
+        stage ('Push docker image to registry') {
+            steps {
+                script{
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub_username_password_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
+                        sh "docker login -u ${user} -p ${pwd}"
+                        sh "docker push ${user}/${IMAGE_NAME}:${IMAGE_TAG}"
+                    }
+                }
+            }
+        }
+    }
+}
+
+def getImageName(String changeTarget, String gitBranch) {
+    if (changeTarget) {
+        // Use CHANGE_TARGET for PR jobs
+        return changeTarget.substring(changeTarget.indexOf('pre-prod/') + 'pre-prod/'.length())
+    } else if (gitBranch) {
+        // Use GIT_BRANCH for after-merge jobs
+        return gitBranch.substring(gitBranch.indexOf('pre-prod/') + 'pre-prod/'.length())
+    } else {
+        error("Neither CHANGE_TARGET nor GIT_BRANCH is defined.")
+    }
+}
+
+def getImageTag(String changeId, String buildTag) {
+    if (changeId) {
+        // Use "PR-BUILD_TAG" for PR jobs
+        return "PR-${changeId}"
+    } else {
+        // Use "BUILD_TAG" for after-merge jobs
+        return "${buildTag}"
+    }
+}
