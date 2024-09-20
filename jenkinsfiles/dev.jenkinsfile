@@ -39,6 +39,7 @@ pipeline {
                     steps {
                         dependencyCheck additionalArguments: '', odcInstallation: 'dependency-check-main'
                         dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+                        archiveArtifacts artifacts: '**/dependency-check-report.xml'
                     }
                 }
             }
