@@ -9,7 +9,8 @@ pipeline {
         jfrog 'jfrog-cli-main'
     }
     environment {
-        IMAGE_NAME = getBranchImageName(GIT_BRANCH)
+        IMAGE_NAME = getImageName(env.CHANGE_TARGET, env.GIT_BRANCH)
+        IMAGE_TAG = getImageTag(env.CHANGE_ID, env.BUILD_TAG)
     }
     stages {
         stage ('printing env var'){
@@ -27,7 +28,7 @@ pipeline {
             steps {
                 script{
                     withCredentials([usernamePassword(credentialsId: 'dockerhub_username_password_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
-                        sh "docker build -t ${user}/${IMAGE_NAME}:${BUILD_ID} -f Dockerfile.dev ."
+                        sh "docker build -t ${user}/${IMAGE_NAME}:${IMAGE_TAG} -f Dockerfile.dev ."
                     }
                 }
             }
@@ -47,19 +48,32 @@ pipeline {
                 script{
                     withCredentials([usernamePassword(credentialsId: 'dockerhub_username_password_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
                         sh "docker login -u ${user} -p ${pwd}"
-                        sh "docker push ${user}/${IMAGE_NAME}:${BUILD_ID}"
+                        sh "docker push ${user}/${IMAGE_NAME}:${IMAGE_TAG}"
                     }
                 }
             }
         }
     }
 }
-def getBranchImageName(String branchName) {
-    if (branchName.startsWith('PR-')) {
-        // Handle pull request branches
-        return branchName
-    } else if (branchName.startsWith('pre-prod/')) {
-        // Handle pre-prod branches
-        return branchName.substring(branchName.indexOf('pre-prod/') + 'pre-prod/'.length())
+
+def getImageName(String changeTarget, String gitBranch) {
+    if (changeTarget) {
+        // Use CHANGE_TARGET for PR jobs
+        return changeTarge.substring(branchName.indexOf('pre-prod/') + 'pre-prod/'.length())
+    } else if (gitBranch) {
+        // Use GIT_BRANCH for after-merge jobs
+        return gitBranch.substring(branchName.indexOf('pre-prod/') + 'pre-prod/'.length())
+    } else {
+        error("Neither CHANGE_TARGET nor GIT_BRANCH is defined.")
+    }
+}
+
+def getImageTag(String changeId, String buildTag) {
+    if (changeId) {
+        // Use "PR-BUILD_TAG" for PR jobs
+        return "PR-${changeId}"
+    } else {
+        // Use "BUILD_TAG" for after-merge jobs
+        return "${buildTag}"
     }
 }
