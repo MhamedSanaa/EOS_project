@@ -68,17 +68,11 @@ public class SecurityConfig {
   private CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration corsConfiguration = new CorsConfiguration();
     corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-    corsConfiguration.setAllowedHeaders(
-        Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+    corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+    corsConfiguration.setExposedHeaders(Arrays.asList("Authorization")); // Add this line if you need to expose headers
     corsConfiguration.setAllowCredentials(true);
-    corsConfiguration.addAllowedHeader("*");
-    corsConfiguration.addAllowedOrigin("http://192.168.199.134:31000");
-    corsConfiguration.addAllowedOrigin("https://192.168.199.134:31001");
-    corsConfiguration.addAllowedOrigin("http://192.168.1.14");
-    corsConfiguration.addAllowedOrigin("https://192.168.1.14");
-    corsConfiguration.addAllowedOrigin("http://192.168.1.14:8888");
-    corsConfiguration.addAllowedOrigin("http://localhost:8888");
-    corsConfiguration.addAllowedOrigin("http://localhost:3000");
+    corsConfiguration.addAllowedOrigin("*");
+    
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", corsConfiguration);
     return source;
