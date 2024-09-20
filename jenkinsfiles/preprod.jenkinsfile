@@ -36,7 +36,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub_username_password_cred', passwordVariable: 'pwd', usernameVariable: 'user')]) {
                     //sh "trivy image ${user}/${IMAGE_NAME}"
-                    sh "trivy image --format json -o trivy-report.json ${user}/${IMAGE_NAME}"
+                    sh "trivy image --skip-db-update --format json -o trivy-report.json ${user}/${IMAGE_NAME}"
                     archiveArtifacts artifacts: '**/trivy-report.json'
                     //-v $HOME/Library/Caches:/root/.cache/
                 }
