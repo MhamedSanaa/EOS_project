@@ -67,14 +67,16 @@ public class SecurityConfig {
 
   private CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration corsConfiguration = new CorsConfiguration();
+    
     corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
     corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+    
     corsConfiguration.setAllowCredentials(true);
-    corsConfiguration.setAllowedOrigins(Arrays.asList("https://192.168.199.134:31001", "http://192.168.199.134:31000")); // Replace with your exact origins
+    
+    corsConfiguration.setAllowedOrigins(Arrays.asList("https://192.168.199.134:31001", "http://192.168.199.134:31000"));
     
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", corsConfiguration);
     return source;
   }
-
 }
