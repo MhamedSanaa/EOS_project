@@ -9,7 +9,7 @@ pipeline {
         jfrog 'jfrog-cli-main'
     }
     environment {
-        IMAGE_NAME = GIT_BRANCH.substring(GIT_BRANCH.indexOf('pre-prod/') + 'pre-prod/'.length())
+        IMAGE_NAME = getBranchImageName(GIT_BRANCH)
     }
     stages {
         stage ('printing env var'){
@@ -52,5 +52,14 @@ pipeline {
                 }
             }
         }
+    }
+}
+def getBranchImageName(String branchName) {
+    if (branchName.startsWith('PR-')) {
+        // Handle pull request branches
+        return branchName
+    } else if (branchName.startsWith('pre-prod/')) {
+        // Handle pre-prod branches
+        return branchName.substring(branchName.indexOf('pre-prod/') + 'pre-prod/'.length())
     }
 }
