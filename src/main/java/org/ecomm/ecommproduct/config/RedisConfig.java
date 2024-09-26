@@ -28,7 +28,6 @@ class RedisConfig {
     log.info(redisHost + " | " + redisPort + " | "+ redisPassword);
     jedisConFactory.setHostName(redisHost);
     jedisConFactory.setPort(Integer.valueOf(redisPort));
-    jedisConFactory.setPassword(redisPassword);
     return jedisConFactory;
   }
 
