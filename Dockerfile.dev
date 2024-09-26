@@ -1,5 +1,7 @@
 FROM postgres:14.7
+
 ENV POSTGRES_DB=ecomm
+ENV POSTGRES_USER=postgres
 ENV POSTGRES_PASSWORD=azerty
 COPY ./ecomm.sql /docker-entrypoint-initdb.d/ecomm.sql
 COPY ./install-pgcrypto.sh /docker-entrypoint-initdb.d/install-pgcrypto.sh
