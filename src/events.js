@@ -1,8 +1,8 @@
 import { Heading, List, ListIcon, ListItem, Text } from "@chakra-ui/layout";
 import React, { useEffect, useState } from "react";
 
-//const socketURL = process.env.REACT_APP_WS_BASE_URL;
-const socketURL = "ws://192.168.199.134:31120/ws/events";
+const socketURL = process.env.REACT_APP_WS_BASE_URL;
+//const socketURL = "ws://192.168.199.134:31120/ws/events";
 
 const Events = () => {
   const [events, setEvents] = useState([]);
