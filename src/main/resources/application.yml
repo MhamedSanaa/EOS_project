@@ -17,6 +17,9 @@ spring:
     password: ${ELASTICSEARCH_PASSWORD}
     username: elastic
     connection-timeout: 5s
+redis:
+  host: ${REDIS_URL}
+  port: ${REDIS_PORT}
 
 logging:
   level:
