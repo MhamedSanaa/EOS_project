@@ -1,17 +1,16 @@
-# Use the official PostgreSQL image
+# Use official PostgreSQL base image
 FROM postgres:14
 
-# Set environment variables for PostgreSQL
-ENV POSTGRES_DB=azerty
+# Set environment variables for the database
 ENV POSTGRES_USER=azerty
 ENV POSTGRES_PASSWORD=azerty
+ENV POSTGRES_DB=azerty
 
-# Copy the SQL initialization file into the Docker container
-COPY ./install-pgcrypto.sh /docker-entrypoint-initdb.d/install-pgcrypto.sh
-COPY ./ecomm.sql /docker-entrypoint-initdb.d/ecomm.sql
+# Copy seed file to the Docker image
+COPY ./ecomm.sql /docker-entrypoint-initdb.d/init.sql
 
-# Make the script executable
-RUN chmod +x /docker-entrypoint-initdb.d/install-pgcrypto.sh
+# Install `pgcrypto` extension after PostgreSQL is up
+RUN echo "CREATE EXTENSION IF NOT EXISTS pgcrypto;" > /docker-entrypoint-initdb.d/01_pgcrypto.sql
 
-# Expose PostgreSQL default port
+# Expose PostgreSQL port
 EXPOSE 5432
