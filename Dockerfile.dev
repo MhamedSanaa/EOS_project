@@ -1,8 +1,8 @@
 FROM postgres:14.7
 
 # Environment variables for PostgreSQL
-ENV POSTGRES_DB=azerty
-ENV POSTGRES_PASSWORD=azerty
+ENV POSTGRES_DB prototype1
+ENV POSTGRES_PASSWORD avizva9372
 
 # Set the working directory
 WORKDIR /docker-entrypoint-initdb.d
