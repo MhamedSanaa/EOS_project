@@ -24,6 +24,8 @@ logging:
 
 host:
   url: ${HOST_URL}
+  redis_url: {REDIS_URL}
+  redis_port: {REDIS_PORT}
 
 springdoc:
   swagger-ui:
