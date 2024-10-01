@@ -11,8 +11,8 @@ class RedisConfig {
   @Bean
   JedisConnectionFactory jedisConnectionFactory() {
     JedisConnectionFactory jedisConFactory = new JedisConnectionFactory();
-    jedisConFactory.setHostName("${host.redis_url}");
-    jedisConFactory.setPort("${host.redis_port}");
+    jedisConFactory.setHostName("${host.redis-url}");
+    jedisConFactory.setPort(6379);
     return jedisConFactory;
   }
 
