@@ -1,7 +1,3 @@
-//the higher branch from the preprod    will be the release     you will use verisoning realse-1.2 and tryin to work with versions will rely on pull request
-//the higher branch from the dev        will be the pre-prod    used for testing env you will use kubernetes on vm plus other testing prams will rely on pull request
-//this used for dev environment it build incoming changes from sub branches
-//the lower branch from the dev         will be the local/feature you will vreate these branches from the dev branch of specific microservice to be devolopped localy then merge the branch back and delete to the dev branch
 pipeline {
     agent any
     tools{
@@ -37,9 +33,9 @@ pipeline {
                 }
                 stage ('dependency check') {
                     steps {
-                        dependencyCheck additionalArguments: '', nvdCredentialsId: 'nvd_dependencycheck_token_cred', odcInstallation: 'dependency-check-main'
-                        dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-                        archiveArtifacts artifacts: '**/dependency-check-report.xml'
+                        dependencyCheck additionalArguments: '--format XML --out dependency_report.xml', nvdCredentialsId: 'nvd_dependencycheck_token_cred', odcInstallation: 'dependency-check-main'
+                        dependencyCheckPublisher pattern: '**/dependency_report.xml'
+                        archiveArtifacts artifacts: '**/dependency_report.xml'
                     }
                 }
             }
