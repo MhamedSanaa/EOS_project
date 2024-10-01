@@ -37,7 +37,7 @@ pipeline {
                 }
                 stage ('dependency check') {
                     steps {
-                        dependencyCheck additionalArguments: '--format XML --out ./dependency_report.xml', odcInstallation: 'dependency-check-main'
+                        dependencyCheck additionalArguments: '--format XML --out dependency_report.xml', odcInstallation: 'dependency-check-main'
                         dependencyCheckPublisher pattern: '**/dependency_report.xml'
                         archiveArtifacts artifacts: '**/dependency_report.xml'
                     }
