@@ -42,7 +42,7 @@ pipeline {
         }
         stage ('Push docker image to registry') {
             when {
-                expression { !env.GIT_BRANCH } 
+                expression { !env.CHANGE_TARGET } 
             }
             steps {
                 script{
