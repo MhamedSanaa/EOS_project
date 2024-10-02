@@ -3,6 +3,7 @@ package org.ecomm.ecommproduct.rest.services.admin;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.ecomm.ecommproduct.persistance.entity.EFeatureTemplate;
 import org.ecomm.ecommproduct.persistance.repository.FeatureTemplateRepository;
 import org.ecomm.ecommproduct.rest.request.admin.AddFeatureTemplate;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Slf4j
 public class AdminFeatureTemplateServiceImpl implements AdminFeatureTemplateService {
 
   @Autowired ObjectMapper mapper = new ObjectMapper();
@@ -30,6 +32,7 @@ public class AdminFeatureTemplateServiceImpl implements AdminFeatureTemplateServ
 
   @Override
   public List<?> getFeatureTemplate(int categoryId) {
+    log.warn("category id = " + categoryId);
     EFeatureTemplate eFeatureTemplate = featureTemplateRepository.findByCategoryId(categoryId);
 
     try {
