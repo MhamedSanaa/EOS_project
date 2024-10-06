@@ -68,10 +68,10 @@ public class RedisUtils {
                                 .quantityAvailable(eInventory.getQuantityAvailable())
                                 .sku(eInventory.getSku())
                                 .id(eInventory.getId())
-                                .variantId(eInventory.getVariant().getId())
+                                .variantId(eInventory.getVariant() != null ? eInventory.getVariant().getId() : 1)
                                 .quantitySold(eInventory.getQuantitySold())
                                 .build())
-                        .variantId(eInventory.getVariant().getId())
+                        .variantId(eInventory.getVariant() != null ? eInventory.getVariant().getId() : 1)
                         .build())
             .toList();
       
