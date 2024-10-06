@@ -20,6 +20,8 @@ spring:
     password: ${ELASTICSEARCH_PASSWORD}
     username: elastic
     connection-timeout: 5s
+    index:
+      create-on-startup: true 
 
 redis:
   host: ${REDIS_URL}
